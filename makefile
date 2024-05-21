@@ -60,3 +60,36 @@ dev-status:
 	kubectl get svc -o wide
 	kubectl get pods -o wide --watch --all-namespaces
 
+
+
+# ------------------------------------------------------------------------------
+
+dev-load:
+	kind load docker-image $(SALES_IMAGE) --name $(KIND_CLUSTER) & \
+	kind load docker-image $(METRICS_IMAGE) --name $(KIND_CLUSTER) & \
+
+
+dev-apply:
+	kustomize build zarf/k8s/dev/sales | kubectl apply -f -
+	kubectl wait pods --namespace=$(NAMESPACE) --selector app=$(SALES_APP) --timeout=120s --for=condition=Ready
+
+
+
+dev-logs:
+	kubectl logs --namespace=$(NAMESPACE) -l app=$(SALES_APP) --all-containers=true -f --tail=100 --max-log-requests=6 | go run api/cmd/tooling/logfmt/main.go -service=$(SALES_APP)
+
+
+dev-describe-deployment:
+	kubectl describe deployment --namespace=$(NAMESPACE) $(SALES_APP)
+
+dev-describe-sales:
+	kubectl describe pod --namespace=$(NAMESPACE) -l app=$(SALES_APP)
+
+
+
+
+
+
+
+
+
