@@ -21,7 +21,7 @@ PROMTAIL        := grafana/promtail:2.9.0
 
 KIND_CLUSTER    := ardan-starter-cluster
 NAMESPACE       := sales-system
-SALES_APP       := sales-api
+SALES_APP       := sales
 AUTH_APP        := auth
 APP             := sales
 BASE_IMAGE_NAME := ardanlabs/service
@@ -76,7 +76,7 @@ dev-load:
 
 dev-apply:
 	kustomize build zarf/k8s/dev/sales | kubectl apply -f -
-	kubectl wait pods --namespace=$(NAMESPACE) --selector app=$(SALES_APP) --timeout=120s --for=condition=Ready
+	kubectl wait pods --namespace=$(NAMESPACE) --selector app=$(APP) --timeout=120s --for=condition=Ready
 
 
 
