@@ -21,12 +21,18 @@ PROMTAIL        := grafana/promtail:2.9.0
 
 KIND_CLUSTER    := ardan-starter-cluster
 NAMESPACE       := sales-system
+SALES_APP       := sales-api
+AUTH_APP        := auth
 APP             := sales
 BASE_IMAGE_NAME := ardanlabs/service
 SERVICE_NAME    := sales-api
 VERSION         := 0.0.1
+SALES_IMAGE     := $(BASE_IMAGE_NAME)/$(SALES_APP):$(VERSION)
 SERVICE_IMAGE   := $(BASE_IMAGE_NAME)/$(SERVICE_NAME):$(VERSION)
 METRICS_IMAGE   := $(BASE_IMAGE_NAME)/$(SERVICE_NAME)-metrics:$(VERSION)
+
+
+
 
 # ==============================================================================
 # Building containers
@@ -65,8 +71,7 @@ dev-status:
 # ------------------------------------------------------------------------------
 
 dev-load:
-	kind load docker-image $(SALES_IMAGE) --name $(KIND_CLUSTER) & \
-	kind load docker-image $(METRICS_IMAGE) --name $(KIND_CLUSTER) & \
+	kind load docker-image $(SALES_IMAGE) --name $(KIND_CLUSTER)
 
 
 dev-apply:
