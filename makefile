@@ -5,6 +5,9 @@ SHELL = $(if $(wildcard $(SHELL_PATH)),/bin/ash,/bin/bash)
 run:
 	go run app/services/sales-api/main.go | go run app/tooling/logfmt/main.go
 
+run:
+	go run app/services/sales-api/main.go --help | go run app/tooling/logfmt/main.go
+
 # ==============================================================================
 # Define dependencies
 
@@ -69,6 +72,16 @@ dev-status:
 
 
 # ------------------------------------------------------------------------------
+build: sales
+
+sales:
+	docker build \
+		-f zarf/docker/dockerfile.sales \
+		-t $(SALES_IMAGE) \
+		--build-arg BUILD_REF=$(VERSION) \
+		--build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		.
+
 
 dev-load:
 	kind load docker-image $(SALES_IMAGE) --name $(KIND_CLUSTER)
@@ -99,8 +112,12 @@ dev-update: build dev-load dev-restart
 dev-update-apply: build dev-load dev-apply
 
 
+# ==============================================================================
+# Modules support
 
-
+tidy:
+	go mod tidy
+	go mod vendor
 
 
 
