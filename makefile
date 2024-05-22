@@ -21,7 +21,7 @@ PROMTAIL        := grafana/promtail:2.9.0
 
 KIND_CLUSTER    := ardan-starter-cluster
 NAMESPACE       := sales-system
-SALES_APP       := sales
+SALES_APP       := sales-api
 AUTH_APP        := auth
 APP             := sales
 BASE_IMAGE_NAME := ardanlabs/service
@@ -81,15 +81,22 @@ dev-apply:
 
 
 dev-logs:
-	kubectl logs --namespace=$(NAMESPACE) -l app=$(SALES_APP) --all-containers=true -f --tail=100 --max-log-requests=6 | go run api/cmd/tooling/logfmt/main.go -service=$(SALES_APP)
+	kubectl logs --namespace=$(NAMESPACE) -l app=$(APP) --all-containers=true -f --tail=100 --max-log-requests=6 | go run app/tooling/logfmt/main.go -service=$(SALES_APP)
 
 
 dev-describe-deployment:
-	kubectl describe deployment --namespace=$(NAMESPACE) $(SALES_APP)
+	kubectl describe deployment --namespace=$(NAMESPACE) $(APP)
 
 dev-describe-sales:
-	kubectl describe pod --namespace=$(NAMESPACE) -l app=$(SALES_APP)
+	kubectl describe pod --namespace=$(NAMESPACE) -l app=$(APP)
 
+
+dev-restart:
+	kubectl rollout restart deployment $(APP) --namespace=$(NAMESPACE)
+
+dev-update: build dev-load dev-restart
+
+dev-update-apply: build dev-load dev-apply
 
 
 
