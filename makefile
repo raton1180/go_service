@@ -8,6 +8,8 @@ run:
 run-help:
 	go run app/services/sales-api/main.go --help | go run app/tooling/logfmt/main.go
 
+curl:
+	curl -il http://localhost:4000/hack
 # ==============================================================================
 # Define dependencies
 
@@ -76,7 +78,7 @@ build: sales
 
 sales:
 	docker build \
-		-f zarf/docker/dockerfile.sales \
+		-f zarf/docker/dockerfile.service \
 		-t $(SALES_IMAGE) \
 		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
@@ -119,6 +121,11 @@ tidy:
 	go mod tidy
 	go mod vendor
 
+# ==============================================================================
+# Metrics and Tracing
+
+metrics-view-sc:
+	expvarmon -ports="localhost:3010" -vars="build,requests,goroutines,errors,panics,mem:memstats.Alloc"
 
 
 

@@ -1,5 +1,22 @@
 # github.com/ardanlabs/conf/v3 v3.1.7
 ## explicit; go 1.13
 github.com/ardanlabs/conf/v3
+# github.com/arl/statsviz v0.6.0
+## explicit; go 1.20
+github.com/arl/statsviz
+github.com/arl/statsviz/internal/plot
+github.com/arl/statsviz/internal/static
+# github.com/dimfeld/httptreemux/v5 v5.5.0
+## explicit; go 1.9
+github.com/dimfeld/httptreemux/v5
 # github.com/google/go-cmp v0.6.0
 ## explicit; go 1.13
+# github.com/gorilla/websocket v1.5.1
+## explicit; go 1.20
+github.com/gorilla/websocket
+# golang.org/x/net v0.25.0
+## explicit; go 1.18
+golang.org/x/net/internal/socks
+golang.org/x/net/proxy
+# golang.org/x/tools v0.6.0
+## explicit; go 1.18
