@@ -84,6 +84,9 @@ sales:
 		--build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 		.
 
+load:
+	hey -m GET -c 100 -n 10000 "http://localhost:4000/hack"
+
 
 dev-load:
 	kind load docker-image $(SALES_IMAGE) --name $(KIND_CLUSTER)

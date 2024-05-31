@@ -21,7 +21,7 @@ type RouteAdder interface {
 }
 
 func APIMux(cfg APIMuxConfig, routerAdder RouteAdder) *web.App {
-	app := web.NewApp(cfg.Shutdown, mid.Logger(cfg.Log))
+	app := web.NewApp(cfg.Shutdown, mid.Logger(cfg.Log), mid.Errors(cfg.Log), mid.Metrics(), mid.Panics())
 	routerAdder.Add(app, cfg)
 	return app
 }
