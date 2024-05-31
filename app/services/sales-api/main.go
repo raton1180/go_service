@@ -17,6 +17,7 @@ import (
 	"github.com/raton1180/service/app/services/sales-api/v1/handlers"
 	v1 "github.com/raton1180/service/business/web/v1"
 	"github.com/raton1180/service/business/web/v1/debug"
+	"github.com/raton1180/service/foundation/web"
 )
 
 var build = "develop"
@@ -32,7 +33,7 @@ func main() {
 	}
 
 	traceIDFunc := func(ctx context.Context) string {
-		return ""
+		return web.GetTraceID(ctx)
 	}
 
 	log = logger.NewWithEvents(os.Stdout, logger.LevelInfo, "SALES-API", traceIDFunc, events)
@@ -44,7 +45,6 @@ func main() {
 		return
 	}
 
-	return
 }
 
 func run(ctx context.Context, log *logger.Logger) error {

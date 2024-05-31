@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/raton1180/service/app/foundation/logger"
+	"github.com/raton1180/service/business/web/v1/mid"
 	"github.com/raton1180/service/foundation/web"
 )
 
@@ -20,7 +21,7 @@ type RouteAdder interface {
 }
 
 func APIMux(cfg APIMuxConfig, routerAdder RouteAdder) *web.App {
-	app := web.NewApp(cfg.Shutdown)
+	app := web.NewApp(cfg.Shutdown, mid.Logger(cfg.Log))
 	routerAdder.Add(app, cfg)
 	return app
 }
